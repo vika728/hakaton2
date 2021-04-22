@@ -86,19 +86,16 @@ class LikeSerializer(serializers.ModelSerializer):
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
-        fields = ('product', 'favorite', )
+        fields = '__all__'
 
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = request.user
-        favourite = Favorite.objects.create(user=user, **validated_data)
-        return favourite
+    # def create(self, validated_data):
+    #     request = self.context.get('request')
+    #     user = request.user
+    #     favourite = Favorite.objects.create(user=user, **validated_data)
+    #     return favourite
 
     def to_representation(self, instance):
         representation = super(FavoriteSerializer, self).to_representation(instance)
         representation['user'] = instance.user.email
         return representation
-
-
-
 

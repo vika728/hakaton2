@@ -34,3 +34,4 @@ class CartViewSet(PermissionMixin, viewsets.ModelViewSet):
             # return Response('вы должны зарегаться', status=status.HTTP_401_UNAUTHORIZED)
         queryset = queryset.filter(user=qs)
         return queryset
+

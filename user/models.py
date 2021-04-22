@@ -9,7 +9,7 @@ class MyUserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
-        user = self.model(email=email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.create_activation_code()
         user.save(using=self.db)
@@ -17,7 +17,7 @@ class MyUserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None, **extra_fields):
         email = self.normalize_email(email)
-        user = self.model(email=email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.is_active = True
         user.is_staff = True

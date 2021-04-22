@@ -13,18 +13,11 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, write_only=True)
+    total_price = serializers.ReadOnlyField(source='get_total_price')
 
     class Meta:
         model = Cart
-        fields = ('id', 'items')
-
-    def get_fields(self):
-        action = self.context.get('action')
-        fields = super().get_fields()
-        if action == 'create':
-            fields.pop('user')
-            fields.pop('cart')
-        return fields
+        fields = ('id', 'items', 'total_price')
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -35,7 +28,6 @@ class CartSerializer(serializers.ModelSerializer):
             CartItem.objects.create(cart=cart,
                                     product=item['product'],
                                     amount=item['amount'])
-        cart.cart = True if cart.cart == False else False
         cart.save()
         return cart
 

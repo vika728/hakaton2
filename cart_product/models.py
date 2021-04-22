@@ -6,6 +6,13 @@ from product.models import Product
 class Cart(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='cart')
 
+    def get_total_price(self):
+        products = CartItem.objects.all()
+        count = 0
+        for product in products:
+            count += product.get_total_price()
+        return count
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartitem')
@@ -17,32 +24,3 @@ class CartItem(models.Model):
 
     def get_total_price(self):
         return self.product.price * self.amount
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
