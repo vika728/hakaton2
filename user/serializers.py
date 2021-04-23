@@ -95,7 +95,7 @@ class CreateNewPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError('Пользователь не найден')
         user.is_active = True
         user.activation_code = ''
-        user.send_password(password)
+        user.set_password(password)
         user.save()
         return user
 
